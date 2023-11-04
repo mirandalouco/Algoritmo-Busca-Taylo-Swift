@@ -1,0 +1,236 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage[brazil]{babel}
+\usepackage[lmargin=3cm,tmargin=3cm,rmargin=2cm,bmargin=2cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amsthm,amsfonts,amssymb,dsfont,mathtools}
+\usepackage{blindtext}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.8,0,0.2}
+\definecolor{backcolour}{rgb}{.95,.95,1}
+\definecolor{backcolour2}{rgb}{255,255,255}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{blue},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+}
+\lstdefinestyle{mystyle2}{
+    backgroundcolor=\color{backcolour2},   
+    commentstyle=\color{red},
+    keywordstyle=\color{blue},
+    numberstyle=\tiny\color{black},
+    stringstyle=\color{purple},
+    basicstyle=\ttfamily\small,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=none,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+}
+\lstset{style=mystyle,mystyle2}
+\begin{document}
+
+
+\begin{center}
+\textbf{FATEC RUBENS LARA}
+
+\textbf{CURSO DE CIÊNCIA DE DADOS}
+
+\vspace{3cm}
+
+\textbf{ALGORITMO DE BUSCA DE MÚSICAS POR SIMILARIDADE}
+
+\vspace{3cm}
+
+\textbf{GUSTAVO MIRANDA SILVA}
+
+\textbf{ISABELA VIEIRA DA SILVA CRUZ MARTINS}
+
+\textbf{LUIGI LEONE DUARTE YAMAMOTO LEITE}
+
+\textbf{MANUELA SILVA DE ANDRADE}
+
+\vfill
+
+\begin{flushright}
+Santos - São Paulo\\
+23/10/2023
+\end{flushright}
+\end{center}
+
+\begin{figure}{}
+\centering
+\label{}
+\includegraphics[width=14cm,height=2cm]{rodap-4.png}
+\end{figure}
+
+\clearpage
+
+Neste presente relatório queremos demonstrar um algoritmo de busca que se baseia no ângulo do cosseno e em como ele pode ser aplicado no âmbito musical, de forma que o usuário possa encontrar uma música de acordo com palavras chaves que o mesmo entregar ao algoritmo, essas palavras chaves podem ser utilizadas de maneira que o usuário expresse seus sentimentos para se confortar em alguma música, em ambientes sociais onde é desejável musicas animadas, em estudos onde se utiliza músicas mais calmas para otimização da concentração etc.\\
+
+Variáveis como essas mudam de pessoa a pessoa, se tornam dependente ao usuário e como ele vai se aproveitar do algoritmo, para realização deste relatório, usaremos um dataset de um artista específico com grande quantidade de músicas em sua discografia, que aborde temas emocionais e pessoais, que seu público tenha alta identificação em suas músicas e tenha trabalhado em diferentes gêneros musicais que resulta em uma variadade de tipos músicas para estudo.\\
+
+Para isso foi selecionada a artista norte-americana Taylor Swift que por si acaba satisfazendo os critérios, explorou vários gêneros musicais ao longo de sua carreira, e o estilo de cada álbum reflete sua evolução como artista.\\ 
+
+Aqui está uma breve descrição dos gêneros associados a cada um de seus álbuns:\\\\
+"Taylor Swift" (2006) - 11 faixas, principalmente country e country pop.\\
+"Fearless" (2008) - 13 faixas, uma mistura de country, country pop e elementos de música pop \\
+"Speak Now" (2010) - 14 faixas, explorando o country, o country pop, com elementos de música pop e rock.\\
+"Red" (2012) - 16 faixas, incluindo uma variedade de gêneros, como pop, country, rock e indie.\\
+"1989" (2014) - 13 faixas, com um som pop mais eletrônico, influências do synth-pop e dance-pop.\\
+"Reputation" (2017) - 15 faixas, principalmente música pop, com elementos de hip-hop e eletrônico.\\
+"Lover" (2019) - 18 faixas, um retorno a um som pop suave, com algumas faixas mais experimentais.\\
+"Folklore" (2020) - 16 faixas, um estilo indie folk e alternativo com um som mais acústico e reflexivo.\\
+"Evermore" (2020) - 15 faixas, continua a explorar o estilo indie folk e alternativo estabelecido em "Folklore".\\\\
+Total de 131 músicas e 14 gêneros musicais diferentes\\
+\pagebreak
+
+
+No contexto de busca de músicas em um dataset da Taylor Swift, o algoritmo para encontrar músicas que são mais semelhantes em termos de conteúdo musical em relação a uma frase de consulta. Aqui está como é aplicado este algoritmo a um conjunto de dados de músicas da Taylor Swift:\\
+
+Primeiro, cada música é representada como um vetor em um espaço vetorial, uma maneira comum de fazer isso é usar recursos musicais relevantes, como acordes, letras, tempo, tom e outros, mas como dito anteriormente apenas a letra servirá como critério. Cada música será um vetor nesse espaço. O usuário fornece uma frase de consulta, como forma de se expressar, o que também é representada como um vetor no mesmo espaço vetorial.\\
+
+Cálculo do Ângulo do Cosseno:\\
+Para encontrar músicas semelhantes à frase de consulta, você calcula o cosseno do ângulo entre o vetor da música de consulta e os vetores de todas as músicas no dataset. Isso é feito usando a fórmula de similaridade do cosseno:\\
+
+Similaridade (cosine similarity) = (Q . M) / (||Q|| * ||M||)\\
+
+Onde:\\
+"Q . M" é o produto escalar entre o vetor da música de consulta Q e o vetor da música M no dataset.\\
+"||Q||" é a norma (magnitude) do vetor da música de consulta Q.\\
+"||M||" é a norma (magnitude) do vetor da música M no dataset.\\
+
+Classificação das Músicas com Base na Similaridade Mapeada:\\
+Após calcular a similaridade do cosseno para todas as músicas em relação à música de consulta e ajustar os valores para estarem mais próximos de 0 ou 1, você pode classificar as músicas com base na "Similaridade Mapeada". Para fazer isso, você pode seguir as seguintes diretrizes:\\
+
+Classificar as músicas em ordem decrescente de "Similaridade Mapeada":\\
+Músicas com valores mapeados mais próximos de 1 são consideradas as mais semelhantes à música de consulta e, portanto, devem aparecer no topo da lista classificada.\\
+Músicas com valores mapeados mais próximos de 0 são consideradas menos semelhantes à música de consulta e, portanto, devem aparecer mais abaixo na lista classificada.\\\\
+Desta forma, as músicas que são mais semelhantes à música de consulta, de acordo com a "Similaridade Mapeada," estarão classificadas mais próximas do topo da lista, enquanto aquelas menos semelhantes estarão classificadas mais próximas do final da lista. Isso permite que o usuário encontre mais facilmente as músicas mais relevantes com base na similaridade ajustada de 0 a 1.\\
+
+Recuperação de Músicas:\\
+As músicas mais similares são recuperadas e retornadas como resultados da pesquisa. Isso permite que o usuário encontre músicas da Taylor Swift que são musicalmente semelhantes à frase de consulta.\\
+
+
+A aplicação da fórmula para calcular o Ângulo entre vetores, foi realizada no python\\
+
+\begin{lstlisting}[language=python, caption=Código referente ao cálculo do Angulo entre Vetores]
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+import pandas as pd
+
+# Carregando o arquivo CSV em um DataFrame
+df = pd.read_csv('caminho do dataset', delimiter=';')
+
+# Coluna que contem as letras das musicas
+letras = df['lyric']  
+
+frase_referencia = input("Digite a frase de referencia: ")
+
+# Inicialize o vetorizador TF-IDF
+vectorizer = TfidfVectorizer()
+
+# Aplique o vetorizador nas letras das musicas
+tfidf_matrix = vectorizer.fit_transform(letras)
+
+# Calcule a similaridade de cosseno entre a frase de referencia e as letras das musicas
+similaridades = cosine_similarity(vectorizer.transform([frase_referencia]), tfidf_matrix)
+
+# Obtenha os indices das musicas mais similares em ordem decrescente
+indices_mais_similares = similaridades.argsort()[0][::-1]
+
+# Crie um conjunto para rastrear as musicas ja incluidas
+musicas_incluidas = set()
+
+i = 0
+# Imprima as 10 musicas mais similares e seus valores de similaridade 
+while len(musicas_incluidas) < 10 and i < len(indices_mais_similares):
+    indice = indices_mais_similares[i]
+    musica = df.iloc[indice]['track_title']
+    valor = similaridades[0][indice]
+    
+    # Verifique se a musica ja foi incluida e, se nao, imprima-a
+    if musica not in musicas_incluidas:
+        musicas_incluidas.add(musica)
+        print(f"{len(musicas_incluidas)}. Musica: {musica}, Similaridade (Cosseno): {valor}")
+    
+    i += 1
+
+\end{lstlisting}
+
+
+\pagebreak
+
+
+\begin{center}
+\textbf{CONCLUSÃO}    
+\end{center}
+
+Podemos analisar com testes como se comporta o algoritmo e o quão efetivo se torna sua busca, testamos o primeiro caso onde queriamos que o algoritmo nos devolvessemos a música nomeada como \textit{"Dress".}, ela possui um contexto onde o eu lírico da música se apaixona por seu melhor amigo, dentro da letra da música, o termo \textit{"Best Friend"} se repete muitas vezes e com isso foram feitas duas consultas como mostrado na figura 1 e 2:\\
+Q1 = \textit{"best friend"}\\
+Q2 = \textit{"im falling in love for my best friend"} \\
+
+Temos que quanto mais direto sua consulta, maior o valor do ângulo do cosseno terá, pois a consulta Q1 possui termos mais similares em comparação a Q2.\\
+
+Segundo caso, se constitui de consultas formadas por frases que capturam o tema das músicas e acertam em encontra-las de forma que o tema seja correspondente, para isso buscamos duas músicas com suas frases que capturem seus temas como observado na figura 3 e 4.\\
+
+Tema da música "Love Story": Q1 = "A timeless love that defied all odds."
+
+Tema da música "Blank Space": Q2 = "Love, chaos, and a hint of madness."\\
+
+Por fim, temos que como ponto fraco a falta de precisão em certos aspectos, pois este algoritmo usa como comparações apenas a letra das músicas, não reconhecendo acordes, tonalidades, tempos entre outros critérios que otimizariam a precisão da busca. Além disso, o uso de metáforas e analogias em músicas, torna a busca da mesma no algoritmo menos precisa, pois em geral o usuário em sua consulta busca por coisas literais que possa se encaixar em seu humor.
+
+
+
+
+\begin{figure}
+Print do console testando consultas:\\\\
+    \centering
+    \includegraphics{dress.png}
+    \caption{Console python}
+    \label{fig:enter-label}
+    \includegraphics{im falling.png}
+    \caption{Console python}
+    \label{fig:enter-label}
+    \centering
+    \includegraphics{lov story.png}
+    \caption{Console python}
+    \label{fig:enter-label}
+        \includegraphics{blank.png}
+    \caption{Console python}
+    \label{fig:enter-label}
+\end{figure}    
+ 
+
+
+
+
+
+
+
+\end{document}
+
+
